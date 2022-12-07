@@ -47,9 +47,20 @@ public class ShoppingControll {
     public HashMap<String, String> updateUser(@RequestBody user u) {
         HashMap<String,String> map=new HashMap<>();
         String userEmail= String.valueOf(u.getEmail());
-        map.put( "password",String.valueOf(dao2.searchUser(userEmail).get(0).getPassword()));
-        map.put("status","success");
+        List<user> pr= dao2.searchUser(userEmail);
+        if (pr.size() !=0) {
+
+        map.put( "password",String.valueOf(pr.get(0).getPassword()));}else {
+            map.put("password", "error");
+        }
         return map;
+    }
+    @PostMapping(path = "/search",consumes = "application/json",produces = "application/json")
+    public List<product> searchP(@RequestBody product p) {
+
+        String productName= String.valueOf(p.getName());
+        System.out.println(productName);
+        return (List<product>) dao.searchProduct(productName);
 
     }
 
